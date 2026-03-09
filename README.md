@@ -116,7 +116,7 @@ Open Claude Code in this project and use these commands:
 │       ├── pages/                 # One page per route
 │       ├── hooks/                 # Custom hooks
 │       └── utils/                 # tRPC client setup
-├── mobile/                        # React Native (Expo)
+├── │   └── mobile/                    # React Native (Expo)
 │   ├── src/
 │   │   ├── screens/               # One screen per file
 │   │   ├── components/            # Native UI components
@@ -144,11 +144,11 @@ npm run lint         # ESLint
 npm run test         # Vitest
 npm run db:seed      # Seed sample data
 
-# Mobile (from mobile/ directory)
-cd mobile && npm install   # Install mobile deps (first time)
-cd mobile && npm run dev   # Start Expo dev server
-cd mobile && npm run ios   # iOS simulator
-cd mobile && npm run android  # Android emulator
+# Mobile (from src/mobile/ directory)
+cd src/mobile && npm install   # Install mobile deps (first time)
+cd src/mobile && npm run dev   # Start Expo dev server
+cd src/mobile && npm run ios   # iOS simulator
+cd src/mobile && npm run android  # Android emulator
 ```
 
 ## How It Works

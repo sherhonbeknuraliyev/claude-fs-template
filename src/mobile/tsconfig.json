@@ -4,9 +4,9 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["../src/shared/*"],
+      "@shared/*": ["../shared/*"],
       "@mobile/*": ["src/*"]
     }
   },
-  "include": ["src", "../src/shared"]
+  "include": ["src", "../shared"]
 }

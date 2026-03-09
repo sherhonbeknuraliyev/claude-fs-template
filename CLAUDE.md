@@ -16,8 +16,8 @@ Single project: web, mobile, and server share types through `src/shared/`:
 src/
 ├── client/     # React web frontend (Vite :3000)
 ├── server/     # Express API (tRPC :4000)
-└── shared/     # Zod schemas + constants (used by ALL platforms)
-mobile/         # React Native (Expo) — imports from src/shared/
+├── shared/     # Zod schemas + constants (used by ALL platforms)
+└── mobile/     # React Native (Expo) — imports from shared/
 ```
 
 ## Key Patterns
@@ -54,10 +54,10 @@ npm run lint         # ESLint
 npm run test         # Vitest
 npm run db:seed      # Seed database with sample data
 
-# Mobile (run from mobile/ directory)
-cd mobile && npm run dev      # Start Expo dev server
-cd mobile && npm run ios      # Run on iOS simulator
-cd mobile && npm run android  # Run on Android emulator
+# Mobile (run from src/mobile/ directory)
+cd src/mobile && npm run dev      # Start Expo dev server
+cd src/mobile && npm run ios      # Run on iOS simulator
+cd src/mobile && npm run android  # Run on Android emulator
 ```
 
 ## Path Aliases

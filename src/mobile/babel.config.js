@@ -7,7 +7,7 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
-            "@shared": "../src/shared",
+            "@shared": "../shared",
             "@mobile": "./src",
           },
         },

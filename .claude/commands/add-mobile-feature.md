@@ -3,24 +3,24 @@ Add a mobile feature for "$ARGUMENTS". The backend (schema, model, service, rout
 ## Steps:
 
 ### 1. Screen
-Create `mobile/src/screens/${Name}sScreen.tsx`:
+Create `src/mobile/src/screens/${Name}sScreen.tsx`:
 - Use `trpc.${name}.list.useQuery()` for data
 - Use `<FlatList>` for lists
 - Handle loading, error, empty states
 
 ### 2. Card/List Item Component
-Create `mobile/src/components/${Name}Card.tsx`:
+Create `src/mobile/src/components/${Name}Card.tsx`:
 - Display entity data in a card layout
 - Use `StyleSheet.create()` for styles
 
 ### 3. Create Form (if needed)
-Create `mobile/src/screens/Create${Name}Screen.tsx`:
+Create `src/mobile/src/screens/Create${Name}Screen.tsx`:
 - Use `trpc.${name}.create.useMutation()`
 - Use TextInput components for form fields
 - Navigate back on success
 
 ### 4. Register Navigation
-In `mobile/src/navigation/RootNavigator.tsx`:
+In `src/mobile/src/navigation/RootNavigator.tsx`:
 - Add screen types to `RootStackParamList`
 - Add `<Stack.Screen>` entries
 

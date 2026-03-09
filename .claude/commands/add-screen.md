@@ -1,12 +1,12 @@
 Add a new React Native screen called "$ARGUMENTS" to the mobile app.
 
-1. Create `mobile/src/screens/${Name}Screen.tsx`:
+1. Create `src/mobile/src/screens/${Name}Screen.tsx`:
    - Import from `react-native` (View, Text, StyleSheet, etc.)
    - Use typed navigation props from `RootStackParamList`
    - Use `StyleSheet.create()` for styles at bottom of file
    - Use tRPC hooks for data fetching (same as web)
 
-2. Register in `mobile/src/navigation/RootNavigator.tsx`:
+2. Register in `src/mobile/src/navigation/RootNavigator.tsx`:
    - Add to `RootStackParamList` type
    - Add `<Stack.Screen>` entry
 
@@ -20,6 +20,6 @@ Add a new React Native screen called "$ARGUMENTS" to the mobile app.
 - Loading: Use `<ActivityIndicator>` from react-native
 - Lists: Use `<FlatList>` (not ScrollView with map)
 - Errors: Show error message in red Text
-- Extract list items into `mobile/src/components/${Name}Card.tsx`
+- Extract list items into `src/mobile/src/components/${Name}Card.tsx`
 
-Keep files under 300 lines. Follow existing screen patterns in `mobile/src/screens/`.
+Keep files under 300 lines. Follow existing screen patterns in `src/mobile/src/screens/`.
