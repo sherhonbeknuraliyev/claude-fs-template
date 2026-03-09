@@ -75,6 +75,15 @@ Copy `.env.example` to `.env`. Required:
 - `MONGODB_URI` — MongoDB connection string
 - `PORT` — Server port (default: 4000)
 
+## Slash Commands (Claude Code)
+Custom commands available in `.claude/commands/`:
+- `/add-feature <name>` — Full CRUD scaffold (schema + model + service + router + page)
+- `/add-page <name>` — New React page with route + nav
+- `/add-schema <name>` — New Zod schema with create/update variants
+- `/add-service <name>` — Backend service + tRPC router for existing schema
+- `/setup` — First-time project setup
+- `/debug <issue>` — Systematic debugging workflow
+
 ## Conventions
 - Use named exports, not default exports
 - Use `.js` extensions in imports (ESM)
