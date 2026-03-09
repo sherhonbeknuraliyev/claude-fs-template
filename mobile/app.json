@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "MyApp",
+    "slug": "myapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.myapp.mobile"
+    },
+    "android": {
+      "package": "com.myapp.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

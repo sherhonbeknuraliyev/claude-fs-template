@@ -12,7 +12,8 @@ Every decision — file sizes, folder structure, docs as skills, shared types �
 - Type `/add-auth` — Claude adds full JWT authentication with guards
 - Type `/deploy docker` — Claude prepares Dockerfile and production config
 - Type `/review` — Claude reviews your code against project-specific rules
-- **15 slash commands** replace traditional documentation. No reading docs — just ask Claude.
+- **17 slash commands** replace traditional documentation. No reading docs — just ask Claude.
+- Type `/add-screen profile` — Claude creates a React Native screen wired to the same API
 
 **The stack is designed so Claude never loses type safety:**
 
@@ -23,18 +24,20 @@ Zod Schema (you define once)
     → Your component has zero manual types
 ```
 
-Change a field on the backend. The frontend knows instantly. No codegen. No manual types.
+Change a field on the backend. Web AND mobile know instantly. No codegen. No manual types.
 
 ## Stack
 
 | Layer | Tech | Why |
 |-------|------|-----|
-| Frontend | React 19 + Vite | Fast dev, huge ecosystem |
+| Web | React 19 + Vite | Fast dev, huge ecosystem |
+| Mobile | React Native (Expo) | Cross-platform, shares types with backend |
 | Backend | Express + tRPC v11 | End-to-end type safety |
 | Database | MongoDB + Mongoose | Flexible, easy to change |
 | Validation | Zod | Shared schemas = single source of truth |
 | State | TanStack Query (via tRPC) | Server state, caching, refetching |
-| Routing | React Router v7 | Standard, well-supported |
+| Web Routing | React Router v7 | Standard, well-supported |
+| Mobile Nav | React Navigation v7 | Native navigation experience |
 
 ## Quick Start
 
@@ -73,6 +76,12 @@ Open Claude Code in this project and use these commands:
 | `/add-middleware rateLimit` | Creates Express or tRPC middleware |
 | `/add-auth` | Adds full JWT auth: registration, login, guards, protected routes, React context |
 
+### Mobile
+| Command | What Claude Does |
+|---------|-----------------|
+| `/add-screen profile` | Creates React Native screen, registers in navigator |
+| `/add-mobile-feature post` | Full mobile feature: screen + components + navigation (uses existing backend) |
+
 ### Maintain & Ship
 | Command | What Claude Does |
 |---------|-----------------|
@@ -91,9 +100,9 @@ Open Claude Code in this project and use these commands:
 ├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
 │   ├── settings.json              # Pre-approved safe commands
-│   └── commands/                  # 15 slash commands (the docs ARE skills)
+│   └── commands/                  # 17 slash commands (the docs ARE skills)
 ├── src/
-│   ├── shared/                    # THE source of truth
+│   ├── shared/                    # THE source of truth (web + mobile + server)
 │   │   ├── schemas/               # Zod schemas = types + validation
 │   │   └── constants/             # Shared constants
 │   ├── server/
@@ -102,13 +111,22 @@ Open Claude Code in this project and use these commands:
 │   │   ├── services/              # Business logic (framework-agnostic)
 │   │   ├── routers/               # tRPC endpoints (thin wiring layer)
 │   │   └── trpc/                  # tRPC setup + auth middleware
-│   └── client/
+│   └── client/                    # React web frontend
 │       ├── components/            # One component per file
 │       ├── pages/                 # One page per route
 │       ├── hooks/                 # Custom hooks
 │       └── utils/                 # tRPC client setup
+├── mobile/                        # React Native (Expo)
+│   ├── src/
+│   │   ├── screens/               # One screen per file
+│   │   ├── components/            # Native UI components
+│   │   ├── hooks/                 # Mobile-specific hooks
+│   │   ├── navigation/            # React Navigation setup
+│   │   └── utils/                 # tRPC client (same types!)
+│   ├── App.tsx                    # Mobile entry point
+│   └── package.json               # Mobile dependencies
 ├── docs/                          # Reference docs (skills are primary)
-└── package.json                   # Single project, one npm install
+└── package.json                   # Web + server dependencies
 ```
 
 **Every source file is under 300 lines.** Claude reads files in full — no truncation, no missed context.
@@ -116,7 +134,8 @@ Open Claude Code in this project and use these commands:
 ## npm Scripts
 
 ```bash
-npm run dev          # Start frontend + backend together
+# Web + Server
+npm run dev          # Start web frontend + backend together
 npm run dev:client   # Vite only (port 3000)
 npm run dev:server   # Express only with hot reload (port 4000)
 npm run build        # Production build
@@ -124,6 +143,12 @@ npm run typecheck    # Type check
 npm run lint         # ESLint
 npm run test         # Vitest
 npm run db:seed      # Seed sample data
+
+# Mobile (from mobile/ directory)
+cd mobile && npm install   # Install mobile deps (first time)
+cd mobile && npm run dev   # Start Expo dev server
+cd mobile && npm run ios   # iOS simulator
+cd mobile && npm run android  # Android emulator
 ```
 
 ## How It Works
@@ -134,11 +159,11 @@ The key insight: **Zod schemas in `src/shared/` are the single source of truth.*
 2. TypeScript types are **inferred** from the schema (`type User = z.infer<typeof userSchema>`)
 3. tRPC uses the schema to **validate** API input
 4. tRPC **infers** the return type from your service function
-5. React Query (on the client) **inherits** all types from tRPC
-6. Your React component is **fully typed** without writing a single interface
+5. React Query (on web and mobile) **inherits** all types from tRPC
+6. Your web component AND React Native screen are **fully typed** without writing a single interface
 
 This means:
-- Add a field to the schema → server and client both know about it
+- Add a field to the schema → server, web, and mobile all know about it
 - Remove a field → TypeScript errors show you every place that needs updating
 - No API type files. No codegen. No manual sync.
 

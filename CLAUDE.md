@@ -1,20 +1,23 @@
 # Project: Fullstack Template
 
 ## Tech Stack
-- **Frontend:** React 19 + Vite + TypeScript
+- **Web Frontend:** React 19 + Vite + TypeScript
+- **Mobile:** React Native (Expo) + TypeScript
 - **Backend:** Express + tRPC v11
 - **Database:** MongoDB + Mongoose
 - **Validation:** Zod (shared schemas)
-- **State:** React Query (via tRPC)
-- **Routing:** React Router v7
+- **State:** TanStack Query (via tRPC)
+- **Web Routing:** React Router v7
+- **Mobile Navigation:** React Navigation v7
 
 ## Architecture
-Single project, three source directories sharing types:
+Single project: web, mobile, and server share types through `src/shared/`:
 ```
 src/
-├── client/     # React frontend (Vite dev server :3000)
-├── server/     # Express API (tRPC on :4000)
-└── shared/     # Zod schemas + constants (imported by both)
+├── client/     # React web frontend (Vite :3000)
+├── server/     # Express API (tRPC :4000)
+└── shared/     # Zod schemas + constants (used by ALL platforms)
+mobile/         # React Native (Expo) — imports from src/shared/
 ```
 
 ## Key Patterns
@@ -41,6 +44,7 @@ Zod schema (shared/) -> tRPC router validates input -> tRPC infers return type -
 
 ## Commands
 ```bash
+# Web + Server
 npm run dev          # Start both client + server
 npm run dev:client   # Vite dev server only
 npm run dev:server   # Express server only (with hot reload)
@@ -49,6 +53,11 @@ npm run typecheck    # Check types without emitting
 npm run lint         # ESLint
 npm run test         # Vitest
 npm run db:seed      # Seed database with sample data
+
+# Mobile (run from mobile/ directory)
+cd mobile && npm run dev      # Start Expo dev server
+cd mobile && npm run ios      # Run on iOS simulator
+cd mobile && npm run android  # Run on Android emulator
 ```
 
 ## Path Aliases
@@ -86,6 +95,10 @@ Custom commands in `.claude/commands/`. Use these instead of reading docs.
 - `/add-hook <name>` — Custom React hook
 - `/add-middleware <name>` — Express or tRPC middleware
 - `/add-auth` — Full JWT auth (backend + frontend + guards)
+
+### Mobile:
+- `/add-screen <name>` — React Native screen + navigation
+- `/add-mobile-feature <name>` — Full mobile feature (screen + components + navigation)
 
 ### Workflow:
 - `/setup` — First-time project bootstrap
