@@ -76,13 +76,26 @@ Copy `.env.example` to `.env`. Required:
 - `PORT` — Server port (default: 4000)
 
 ## Slash Commands (Claude Code)
-Custom commands available in `.claude/commands/`:
-- `/add-feature <name>` — Full CRUD scaffold (schema + model + service + router + page)
-- `/add-page <name>` — New React page with route + nav
-- `/add-schema <name>` — New Zod schema with create/update variants
-- `/add-service <name>` — Backend service + tRPC router for existing schema
-- `/setup` — First-time project setup
-- `/debug <issue>` — Systematic debugging workflow
+Custom commands in `.claude/commands/`. Use these instead of reading docs.
+
+### Scaffolding:
+- `/add-feature <name>` — Full CRUD: schema + model + service + router + page
+- `/add-page <name>` — React page + route + nav link
+- `/add-schema <name>` — Zod schema with create/update + inferred types
+- `/add-service <name>` — Service + tRPC router for existing schema
+- `/add-hook <name>` — Custom React hook
+- `/add-middleware <name>` — Express or tRPC middleware
+- `/add-auth` — Full JWT auth (backend + frontend + guards)
+
+### Workflow:
+- `/setup` — First-time project bootstrap
+- `/review` — Code review with project-specific checklist
+- `/test <feature>` — Write Vitest tests for a feature
+- `/refactor <target>` — Refactor with project rules (300 line limit, etc.)
+- `/debug <issue>` — Systematic full-stack debugging
+- `/explain <topic>` — Explain how something works in this codebase
+- `/optimize <target>` — Performance optimization checklist
+- `/deploy <target>` — Prepare for deployment (Railway, Docker, VPS)
 
 ## Conventions
 - Use named exports, not default exports
@@ -90,6 +103,4 @@ Custom commands available in `.claude/commands/`:
 - Prefer named function declarations for components
 - Service functions return plain objects, not Mongoose documents
 - Always validate input with Zod schemas via tRPC
-- See `docs/CONVENTIONS.md` for full details
-- See `docs/ADDING_FEATURES.md` for step-by-step feature guide
-- See `docs/ARCHITECTURE.md` for architecture deep dive
+- See `docs/CONVENTIONS.md` for full rules

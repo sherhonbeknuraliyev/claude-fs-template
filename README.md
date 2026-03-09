@@ -1,128 +1,152 @@
 # claude-fs-template
 
-A fullstack TypeScript template built by Claude, for Claude users.
+A fullstack TypeScript template built by Claude, for Claude Code users.
 
-Every design decision — file size limits, folder structure, documentation, shared types — is optimized for AI-assisted development with [Claude Code](https://claude.com/claude-code).
-
-## Stack
-
-| Layer | Tech |
-|-------|------|
-| Frontend | React 19 + Vite + TypeScript |
-| Backend | Express + tRPC v11 |
-| Database | MongoDB + Mongoose |
-| Validation | Zod (shared between client & server) |
-| State | React Query (via tRPC) |
-| Routing | React Router v7 |
+Every decision — file sizes, folder structure, docs as skills, shared types — is optimized for AI-assisted development with [Claude Code](https://claude.com/claude-code).
 
 ## Why This Template?
 
-**Built for AI pair programming:**
+**You talk to Claude. Claude builds your app.**
 
-- **CLAUDE.md** at root — Claude reads this automatically and understands the entire project
-- **All files < 300 lines** — Claude reads the full file every time, no truncation
-- **Slash commands** — Type `/add-feature post` and Claude scaffolds the full stack
-- **Shared Zod schemas** — Single source of truth, no type duplication
-- **tRPC** — Zero manual API types. Change a return type on the server, the client knows instantly
-- **Predictable patterns** — Every feature follows the same schema → model → service → router → page flow
+- Type `/add-feature post` — Claude scaffolds schema, model, service, API, and React page
+- Type `/add-auth` — Claude adds full JWT authentication with guards
+- Type `/deploy docker` — Claude prepares Dockerfile and production config
+- Type `/review` — Claude reviews your code against project-specific rules
+- **15 slash commands** replace traditional documentation. No reading docs — just ask Claude.
+
+**The stack is designed so Claude never loses type safety:**
+
+```
+Zod Schema (you define once)
+    → tRPC validates + infers types automatically
+    → React Query hook is fully typed
+    → Your component has zero manual types
+```
+
+Change a field on the backend. The frontend knows instantly. No codegen. No manual types.
+
+## Stack
+
+| Layer | Tech | Why |
+|-------|------|-----|
+| Frontend | React 19 + Vite | Fast dev, huge ecosystem |
+| Backend | Express + tRPC v11 | End-to-end type safety |
+| Database | MongoDB + Mongoose | Flexible, easy to change |
+| Validation | Zod | Shared schemas = single source of truth |
+| State | TanStack Query (via tRPC) | Server state, caching, refetching |
+| Routing | React Router v7 | Standard, well-supported |
 
 ## Quick Start
 
 ```bash
-# Clone the template
+# Option 1: Use as GitHub template
 gh repo create my-app --template sherhonbeknuraliyev/claude-fs-template --public --clone
 cd my-app
 
-# Let Claude set it up for you
-# Just type: /setup
+# Option 2: Clone directly
+git clone https://github.com/sherhonbeknuraliyev/claude-fs-template.git my-app
+cd my-app
+
+# Then open Claude Code and type:
+# /setup
+#
 # Or manually:
 cp .env.example .env
 npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:3000`, API on `http://localhost:4000`.
+Frontend: `http://localhost:3000` | API: `http://localhost:4000`
+
+## All Slash Commands
+
+Open Claude Code in this project and use these commands:
+
+### Build Features
+| Command | What Claude Does |
+|---------|-----------------|
+| `/add-feature post` | Creates the full stack: Zod schema, Mongoose model, service, tRPC router, React page + components |
+| `/add-page dashboard` | Creates React page, adds route, adds nav link |
+| `/add-schema comment` | Creates Zod schema with create/update variants and inferred TypeScript types |
+| `/add-service comment` | Creates service with CRUD + tRPC router, wires it up |
+| `/add-hook useDebounce` | Creates custom React hook with proper patterns |
+| `/add-middleware rateLimit` | Creates Express or tRPC middleware |
+| `/add-auth` | Adds full JWT auth: registration, login, guards, protected routes, React context |
+
+### Maintain & Ship
+| Command | What Claude Does |
+|---------|-----------------|
+| `/review` | Reviews code against project rules: type safety, file size, security, conventions |
+| `/test user` | Writes Vitest tests for a feature (unit + integration) |
+| `/refactor UserList` | Refactors code while respecting 300-line limit and project patterns |
+| `/debug "form not submitting"` | Traces the issue across the full stack systematically |
+| `/explain tRPC` | Explains how a concept works in this specific codebase |
+| `/optimize queries` | Performance audit with actionable fixes |
+| `/deploy docker` | Prepares for deployment (Docker, Railway, VPS) |
+| `/setup` | First-time project setup |
 
 ## Project Structure
 
 ```
-├── CLAUDE.md                    # AI context (Claude reads this first)
+├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
-│   ├── settings.json            # Pre-approved safe commands
-│   └── commands/                # Custom slash commands
-│       ├── add-feature.md       # /add-feature <name>
-│       ├── add-page.md          # /add-page <name>
-│       ├── add-schema.md        # /add-schema <name>
-│       ├── add-service.md       # /add-service <name>
-│       ├── setup.md             # /setup
-│       └── debug.md             # /debug <description>
-├── docs/                        # AI-oriented documentation
-│   ├── ARCHITECTURE.md          # System design & data flow
-│   ├── CONVENTIONS.md           # Code style rules
-│   └── ADDING_FEATURES.md       # Step-by-step feature guide
+│   ├── settings.json              # Pre-approved safe commands
+│   └── commands/                  # 15 slash commands (the docs ARE skills)
 ├── src/
-│   ├── shared/                  # Shared between client & server
-│   │   ├── schemas/             # Zod schemas = types + validation
-│   │   └── constants/           # App-wide constants
-│   ├── server/                  # Express + tRPC backend
-│   │   ├── db/                  # Connection + seed scripts
-│   │   ├── models/              # Mongoose models
-│   │   ├── services/            # Business logic
-│   │   ├── routers/             # tRPC route handlers
-│   │   └── trpc/                # tRPC setup + auth middleware
-│   └── client/                  # React frontend
-│       ├── components/          # Reusable UI components
-│       ├── pages/               # Route-level pages
-│       ├── hooks/               # Custom React hooks
-│       └── utils/               # tRPC client, helpers
-└── package.json                 # Single project, one install
+│   ├── shared/                    # THE source of truth
+│   │   ├── schemas/               # Zod schemas = types + validation
+│   │   └── constants/             # Shared constants
+│   ├── server/
+│   │   ├── db/                    # MongoDB connection + seed
+│   │   ├── models/                # Mongoose models
+│   │   ├── services/              # Business logic (framework-agnostic)
+│   │   ├── routers/               # tRPC endpoints (thin wiring layer)
+│   │   └── trpc/                  # tRPC setup + auth middleware
+│   └── client/
+│       ├── components/            # One component per file
+│       ├── pages/                 # One page per route
+│       ├── hooks/                 # Custom hooks
+│       └── utils/                 # tRPC client setup
+├── docs/                          # Reference docs (skills are primary)
+└── package.json                   # Single project, one npm install
 ```
 
-## Claude Slash Commands
+**Every source file is under 300 lines.** Claude reads files in full — no truncation, no missed context.
 
-These are custom Claude Code commands you can use in any conversation:
-
-| Command | What it does |
-|---------|-------------|
-| `/add-feature post` | Scaffolds full CRUD: schema + model + service + router + page |
-| `/add-page dashboard` | Creates a new React page with routing and nav link |
-| `/add-schema comment` | Creates a Zod schema with create/update variants and types |
-| `/add-service comment` | Creates service + tRPC router for an existing schema |
-| `/setup` | First-time project setup (env, install, seed, start) |
-| `/debug "users not loading"` | Systematic debugging across the full stack |
-
-## How Types Flow
-
-```
-Zod Schema (shared/)
-    ↓ validates input
-tRPC Router (server/routers/)
-    ↓ infers return type
-React Query Hook (client/)
-    ↓ auto-typed
-Your Component — full type safety, zero manual types
-```
-
-You never write `interface ApiResponse { ... }`. It's all inferred.
-
-## Commands
+## npm Scripts
 
 ```bash
-npm run dev          # Start client + server concurrently
-npm run dev:client   # Vite dev server only
-npm run dev:server   # Express with hot reload
+npm run dev          # Start frontend + backend together
+npm run dev:client   # Vite only (port 3000)
+npm run dev:server   # Express only with hot reload (port 4000)
 npm run build        # Production build
-npm run typecheck    # Type check without emit
+npm run typecheck    # Type check
 npm run lint         # ESLint
 npm run test         # Vitest
-npm run db:seed      # Seed database
+npm run db:seed      # Seed sample data
 ```
 
-## Adding a Feature
+## How It Works
 
-The fastest way: type `/add-feature <name>` in Claude Code.
+The key insight: **Zod schemas in `src/shared/` are the single source of truth.**
 
-Or follow the manual steps in [docs/ADDING_FEATURES.md](docs/ADDING_FEATURES.md).
+1. You define a Zod schema once (e.g., `userSchema`)
+2. TypeScript types are **inferred** from the schema (`type User = z.infer<typeof userSchema>`)
+3. tRPC uses the schema to **validate** API input
+4. tRPC **infers** the return type from your service function
+5. React Query (on the client) **inherits** all types from tRPC
+6. Your React component is **fully typed** without writing a single interface
+
+This means:
+- Add a field to the schema → server and client both know about it
+- Remove a field → TypeScript errors show you every place that needs updating
+- No API type files. No codegen. No manual sync.
+
+## Requirements
+
+- Node.js 18+
+- MongoDB (local or [Atlas](https://www.mongodb.com/atlas))
+- [Claude Code](https://claude.com/claude-code) (to use slash commands)
 
 ## License
 
