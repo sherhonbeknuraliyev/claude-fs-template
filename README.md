@@ -61,7 +61,22 @@ npm run dev
 
 Frontend: `http://localhost:3000` | API: `http://localhost:4000`
 
-## All Slash Commands
+## Skills (Auto-Loaded by Claude)
+
+These load automatically when Claude works on relevant code — no commands needed:
+
+| Skill | Auto-triggers when... |
+|-------|----------------------|
+| `project-conventions` | Writing or modifying any code |
+| `trpc-patterns` | Working with API routes or tRPC routers |
+| `zod-schemas` | Creating or editing data schemas |
+| `mongoose-patterns` | Working with database models or queries |
+| `react-patterns` | Writing React components, pages, or hooks |
+| `react-native-patterns` | Working with mobile screens or components |
+
+Skills use progressive loading: Claude sees only the name at startup (~100 tokens each), reads full instructions only when triggered. Zero context waste.
+
+## Slash Commands
 
 Open Claude Code in this project and use these commands:
 
@@ -100,7 +115,8 @@ Open Claude Code in this project and use these commands:
 ├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
 │   ├── settings.json              # Pre-approved safe commands
-│   └── commands/                  # 17 slash commands (the docs ARE skills)
+│   ├── skills/                    # 6 auto-loaded skills (Claude's domain knowledge)
+│   └── commands/                  # 17 slash commands (user-invoked actions)
 ├── src/
 │   ├── shared/                    # THE source of truth (web + mobile + server)
 │   │   ├── schemas/               # Zod schemas = types + validation

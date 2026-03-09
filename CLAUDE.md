@@ -84,8 +84,19 @@ Copy `.env.example` to `.env`. Required:
 - `MONGODB_URI` — MongoDB connection string
 - `PORT` — Server port (default: 4000)
 
+## Skills (Auto-Loaded)
+Claude automatically loads these when working on relevant code:
+- **project-conventions** — File limits, naming, architecture rules
+- **trpc-patterns** — Router, procedure, middleware patterns
+- **zod-schemas** — Schema creation, validation, type inference
+- **mongoose-patterns** — Model, service, query patterns
+- **react-patterns** — Component, page, hook, tRPC usage
+- **react-native-patterns** — Screen, navigation, native components
+
+Skills live in `.claude/skills/`. They load on-demand — no context cost until needed.
+
 ## Slash Commands (Claude Code)
-Custom commands in `.claude/commands/`. Use these instead of reading docs.
+Custom commands in `.claude/commands/`. User-invoked actions.
 
 ### Scaffolding:
 - `/add-feature <name>` — Full CRUD: schema + model + service + router + page
