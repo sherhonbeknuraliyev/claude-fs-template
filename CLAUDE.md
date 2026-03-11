@@ -112,8 +112,16 @@ Claude automatically loads these when working on relevant code:
 - **saas-metrics** — MRR, churn, LTV, CAC, unit economics tracking
 - **copywriting** — Homepage copy, CTAs, email subjects, conversion text
 
+### AI & Agent Skills:
+- **agent-designer** — Multi-agent system architecture, patterns, evaluation
+- **agent-workflow-designer** — Agent orchestration code: pipelines, fan-out, delegation
+
+### Design Skills:
+- **ui-ux-designer** — Design systems, tokens, personas, journey maps, usability
+
 ### Integration Skills:
 - **telegram-bot** — Telegram Bot API: webhooks, messages, keyboards, payments
+- **changelog-generator** — Release notes from conventional commits, SemVer bumps
 
 Skills live in `.claude/skills/`. They load on-demand — no context cost until needed.
 
