@@ -119,6 +119,12 @@ Claude automatically loads these when working on relevant code:
 ### Design Skills:
 - **ui-ux-designer** — Design systems, tokens, personas, journey maps, usability
 
+### Growth Skills:
+- **seo-optimizer** — Meta tags, structured data, sitemaps, Core Web Vitals, SPA SEO
+- **stripe-payments** — Subscriptions, checkout, webhooks, customer portal, pricing
+- **email-templates** — Transactional emails, drip sequences, Resend/React Email
+- **analytics-tracking** — Event taxonomy, SaaS funnels, PostHog/GA4, privacy
+
 ### Integration Skills:
 - **telegram-bot** — Telegram Bot API: webhooks, messages, keyboards, payments
 - **changelog-generator** — Release notes from conventional commits, SemVer bumps

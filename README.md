@@ -91,8 +91,12 @@ These load automatically when Claude works on relevant code — no commands need
 | `agent-workflow-designer` | Implementing agent orchestration patterns |
 | `ui-ux-designer` | UI design systems, UX research, personas |
 | `changelog-generator` | Generating release notes from git history |
+| `seo-optimizer` | Adding meta tags, sitemaps, or structured data |
+| `stripe-payments` | Adding payments, subscriptions, or billing |
+| `email-templates` | Sending transactional or marketing emails |
+| `analytics-tracking` | Adding event tracking or measuring funnels |
 
-**24 skills** load progressively: metadata at startup (~100 tokens each), full instructions only when triggered. Zero context waste.
+**28 skills** load progressively: metadata at startup (~100 tokens each), full instructions only when triggered. Zero context waste.
 
 ## Slash Commands
 
@@ -135,7 +139,7 @@ Open Claude Code in this project and use these commands:
 ├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
 │   ├── settings.json              # Pre-approved safe commands
-│   ├── skills/                    # 24 auto-loaded skills (Claude's domain knowledge)
+│   ├── skills/                    # 28 auto-loaded skills (Claude's domain knowledge)
 │   └── commands/                  # 19 slash commands (user-invoked actions)
 ├── src/
 │   ├── shared/                    # THE source of truth (web + mobile + server)
