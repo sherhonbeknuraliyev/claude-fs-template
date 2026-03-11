@@ -11,25 +11,9 @@ https://api.telegram.org/bot<TOKEN>/METHOD_NAME
 ```
 Token format: `123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11` (from @BotFather)
 
-## Request Format
-- GET or POST, JSON body (`application/json`) or `multipart/form-data` (file uploads)
-- Response: `{ ok: boolean, result: T, description?: string }`
+Requests: GET/POST, JSON body or `multipart/form-data` (file uploads). Response: `{ ok, result, description? }`
 
 ## Getting Updates
-
-### Polling (simple, good for development)
-```ts
-// Long polling
-const getUpdates = async (offset = 0) => {
-  const res = await fetch(`${BOT_URL}/getUpdates?offset=${offset}&timeout=30`);
-  const { result } = await res.json();
-  for (const update of result) {
-    await handleUpdate(update);
-    offset = update.update_id + 1;
-  }
-  return getUpdates(offset); // recursive loop
-};
-```
 
 ### Webhook (production — use this)
 ```ts
@@ -83,10 +67,7 @@ await bot("sendPhoto", {
   caption: "Check this out!",
 });
 
-// Document, Video, Audio — same pattern
-await bot("sendDocument", { chat_id: chatId, document: fileIdOrUrl });
-await bot("sendVideo", { chat_id: chatId, video: fileIdOrUrl });
-await bot("sendLocation", { chat_id: chatId, latitude: 40.7, longitude: -74.0 });
+// Other media: sendDocument, sendVideo, sendAudio, sendLocation — same pattern
 ```
 
 ### Editing Messages
@@ -112,56 +93,25 @@ await bot("answerCallbackQuery", {
 ```
 
 ## Key Types
-
-### Update
 ```ts
 interface Update {
   update_id: number;
-  message?: Message;
+  message?: Message;           // new message
+  callback_query?: CallbackQuery; // button click
+  inline_query?: InlineQuery;  // @bot query
   edited_message?: Message;
-  callback_query?: CallbackQuery;
-  inline_query?: InlineQuery;
   channel_post?: Message;
-  my_chat_member?: ChatMemberUpdated;
 }
-```
 
-### Message
-```ts
 interface Message {
-  message_id: number;
-  from?: User;
-  chat: Chat;
-  date: number; // Unix timestamp
-  text?: string;
-  entities?: MessageEntity[]; // bold, links, commands, etc.
-  photo?: PhotoSize[];
-  document?: Document;
-  reply_to_message?: Message;
-  reply_markup?: InlineKeyboardMarkup;
+  message_id: number; from?: User; chat: Chat; date: number;
+  text?: string; entities?: MessageEntity[];
+  photo?: PhotoSize[]; document?: Document;
+  reply_to_message?: Message; reply_markup?: InlineKeyboardMarkup;
 }
-```
 
-### Chat
-```ts
-interface Chat {
-  id: number;
-  type: "private" | "group" | "supergroup" | "channel";
-  title?: string;
-  username?: string;
-  first_name?: string;
-}
-```
-
-### CallbackQuery
-```ts
-interface CallbackQuery {
-  id: string;
-  from: User;
-  message?: Message;
-  data?: string; // your callback_data
-  chat_instance: string;
-}
+interface Chat { id: number; type: "private"|"group"|"supergroup"|"channel"; title?: string; username?: string; }
+interface CallbackQuery { id: string; from: User; message?: Message; data?: string; }
 ```
 
 ## Helper Pattern for This Project
@@ -225,76 +175,125 @@ async function handleCallback(query: CallbackQuery) {
 
 ## Bot Commands Registration
 ```ts
-// Set bot menu commands (call once at startup)
-await bot("setMyCommands", {
-  commands: [
-    { command: "start", description: "Start the bot" },
-    { command: "help", description: "Show help" },
-    { command: "settings", description: "Bot settings" },
-  ],
-});
+await bot("setMyCommands", { commands: [
+  { command: "start", description: "Start the bot" },
+  { command: "help", description: "Show help" },
+]});
 ```
 
 ## Inline Mode
 ```ts
 // User types @yourbot query — respond with results
-async function handleInlineQuery(query: InlineQuery) {
-  await bot("answerInlineQuery", {
-    inline_query_id: query.id,
-    results: [
-      {
-        type: "article",
-        id: "1",
-        title: "Result Title",
-        input_message_content: { message_text: "Selected result text" },
-      },
-    ],
-    cache_time: 300,
+await bot("answerInlineQuery", {
+  inline_query_id: query.id,
+  results: [{ type: "article", id: "1", title: "Result", input_message_content: { message_text: "Text" } }],
+  cache_time: 300,
+});
+```
+
+## Streaming / Message Drafts (AI Bots)
+
+`sendMessageDraft` streams partial messages to users while being generated — ideal for AI chatbots.
+
+```ts
+// Stream an AI response token-by-token to the user
+async function streamAIResponse(chatId: number, userPrompt: string) {
+  let accumulated = "";
+
+  // Start streaming — sends a draft message that shows as "typing"
+  // The first call creates the draft and returns the message
+  const draft = await bot("sendMessageDraft", {
+    chat_id: chatId,
+    text: "", // initial empty or partial text
+    parse_mode: "HTML",
   });
+
+  const messageId = draft.message_id;
+
+  // Stream tokens from your AI provider
+  for await (const chunk of getAIStream(userPrompt)) {
+    accumulated += chunk;
+
+    // Update the draft with accumulated text
+    await bot("sendMessageDraft", {
+      chat_id: chatId,
+      text: accumulated,
+      message_id: messageId, // update existing draft
+      parse_mode: "HTML",
+    });
+  }
+
+  // Finalize — send the complete message (replaces the draft)
+  await bot("sendMessage", {
+    chat_id: chatId,
+    text: accumulated,
+    parse_mode: "HTML",
+  });
+}
+```
+
+### Key Points
+- Bot API 9.3 (Dec 2025), all bots in API 9.5 (Mar 2026)
+- Real-time text streaming like ChatGPT/Claude web UIs
+- Finalize with `sendMessage` or `editMessageText` when done
+
+### Integration with Claude API
+```ts
+import Anthropic from "@anthropic-ai/sdk";
+
+const anthropic = new Anthropic();
+
+async function handleAIMessage(chatId: number, userText: string) {
+  let accumulated = "";
+  let messageId: number | undefined;
+
+  const stream = anthropic.messages.stream({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: userText }],
+  });
+
+  for await (const event of stream) {
+    if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+      accumulated += event.delta.text;
+
+      // Send or update draft every ~20 chars to avoid rate limits
+      if (accumulated.length % 20 < event.delta.text.length || !messageId) {
+        const draft = await bot("sendMessageDraft", {
+          chat_id: chatId,
+          text: accumulated,
+          ...(messageId && { message_id: messageId }),
+        });
+        messageId = messageId || draft.message_id;
+      }
+    }
+  }
+
+  // Finalize the message
+  if (messageId) {
+    await bot("editMessageText", {
+      chat_id: chatId,
+      message_id: messageId,
+      text: accumulated,
+    });
+  }
 }
 ```
 
 ## Payments (Telegram Stars)
 ```ts
 await bot("sendInvoice", {
-  chat_id: chatId,
-  title: "Premium Plan",
-  description: "Monthly subscription",
-  payload: "premium_monthly",
-  currency: "XTR", // Telegram Stars
-  prices: [{ label: "Premium", amount: 100 }],
+  chat_id: chatId, title: "Premium Plan", description: "Monthly sub",
+  payload: "premium_monthly", currency: "XTR", prices: [{ label: "Premium", amount: 100 }],
 });
-
-// Handle in pre_checkout_query update
-await bot("answerPreCheckoutQuery", {
-  pre_checkout_query_id: query.id,
-  ok: true,
-});
+// Handle pre_checkout_query update:
+await bot("answerPreCheckoutQuery", { pre_checkout_query_id: query.id, ok: true });
 ```
 
 ## Parse Modes
-
-### HTML
-```html
-<b>bold</b>, <i>italic</i>, <u>underline</u>, <s>strikethrough</s>
-<a href="https://example.com">link</a>
-<code>inline code</code>
-<pre>code block</pre>
-<pre><code class="language-python">print("hi")</code></pre>
-<tg-spoiler>spoiler</tg-spoiler>
-<blockquote>quote</blockquote>
-```
-
-### MarkdownV2
-```
-*bold*, _italic_, __underline__, ~strikethrough~
-[link](https://example.com)
-`inline code`
-```pre block```
-||spoiler||
-> blockquote
-```
-Escape these characters: `_*[]()~` > #+-=|{}.!`
+- `HTML`: `<b>`, `<i>`, `<u>`, `<s>`, `<a href="">`, `<code>`, `<pre>`, `<tg-spoiler>`, `<blockquote>`
+- `MarkdownV2`: `*bold*`, `_italic_`, `__underline__`, `~strike~`, `` `code` ``, `||spoiler||`, `> quote`
+  - Escape: `_*[]()~>#+\-=|{}.!`
 
 ## Important Constraints
 - Webhook: must be HTTPS, ports 443/80/88/8443
