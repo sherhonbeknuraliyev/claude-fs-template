@@ -103,6 +103,18 @@ Claude automatically loads these when working on relevant code:
 - **dependency-auditor** — Package updates, vulnerability scanning, bundle size
 - **git-workflow** — Branch strategy, commit conventions, PR process
 
+### Startup Skills (business & growth):
+- **product-manager** — PRDs, user stories, RICE prioritization, sprint planning
+- **pricing-strategy** — SaaS pricing tiers, value metrics, freemium models
+- **launch-strategy** — Product launches, go-to-market, beta releases
+- **landing-page** — Conversion-optimized React landing pages
+- **competitive-analysis** — Market research, feature matrices, battle cards
+- **saas-metrics** — MRR, churn, LTV, CAC, unit economics tracking
+- **copywriting** — Homepage copy, CTAs, email subjects, conversion text
+
+### Integration Skills:
+- **telegram-bot** — Telegram Bot API: webhooks, messages, keyboards, payments
+
 Skills live in `.claude/skills/`. They load on-demand — no context cost until needed.
 
 ## Slash Commands (Claude Code)
@@ -130,6 +142,8 @@ Custom commands in `.claude/commands/`. User-invoked actions.
 - `/explain <topic>` — Explain how something works in this codebase
 - `/optimize <target>` — Performance optimization checklist
 - `/deploy <target>` — Prepare for deployment (Railway, Docker, VPS)
+- `/sync-skills` — Sync skills from alirezarezvani/claude-skills repo
+- `/update-telegram-skill` — Update Telegram Bot skill from latest API docs
 
 ## Conventions
 - Use named exports, not default exports

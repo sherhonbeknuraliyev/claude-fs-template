@@ -12,7 +12,7 @@ Every decision — file sizes, folder structure, docs as skills, shared types �
 - Type `/add-auth` — Claude adds full JWT authentication with guards
 - Type `/deploy docker` — Claude prepares Dockerfile and production config
 - Type `/review` — Claude reviews your code against project-specific rules
-- **17 slash commands** replace traditional documentation. No reading docs — just ask Claude.
+- **19 slash commands** replace traditional documentation. No reading docs — just ask Claude.
 - Type `/add-screen profile` — Claude creates a React Native screen wired to the same API
 
 **The stack is designed so Claude never loses type safety:**
@@ -79,8 +79,16 @@ These load automatically when Claude works on relevant code — no commands need
 | `tech-debt-tracker` | Auditing code quality or planning refactoring |
 | `dependency-auditor` | Updating packages or checking vulnerabilities |
 | `git-workflow` | Creating branches, commits, or PRs |
+| `product-manager` | Writing PRDs, user stories, or prioritizing features |
+| `pricing-strategy` | Designing pricing tiers or monetization |
+| `launch-strategy` | Planning product launches or go-to-market |
+| `landing-page` | Creating marketing or conversion pages |
+| `competitive-analysis` | Researching competitors or market positioning |
+| `saas-metrics` | Tracking MRR, churn, LTV, or business health |
+| `copywriting` | Writing marketing copy, CTAs, or emails |
+| `telegram-bot` | Building Telegram bots with the Bot API |
 
-**12 skills** load progressively: metadata at startup (~100 tokens each), full instructions only when triggered. Zero context waste.
+**20 skills** load progressively: metadata at startup (~100 tokens each), full instructions only when triggered. Zero context waste.
 
 ## Slash Commands
 
@@ -114,6 +122,8 @@ Open Claude Code in this project and use these commands:
 | `/optimize queries` | Performance audit with actionable fixes |
 | `/deploy docker` | Prepares for deployment (Docker, Railway, VPS) |
 | `/setup` | First-time project setup |
+| `/sync-skills` | Syncs skills from alirezarezvani/claude-skills repo |
+| `/update-telegram-skill` | Updates Telegram Bot skill from latest API docs |
 
 ## Project Structure
 
@@ -121,8 +131,8 @@ Open Claude Code in this project and use these commands:
 ├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
 │   ├── settings.json              # Pre-approved safe commands
-│   ├── skills/                    # 12 auto-loaded skills (Claude's domain knowledge)
-│   └── commands/                  # 17 slash commands (user-invoked actions)
+│   ├── skills/                    # 20 auto-loaded skills (Claude's domain knowledge)
+│   └── commands/                  # 19 slash commands (user-invoked actions)
 ├── src/
 │   ├── shared/                    # THE source of truth (web + mobile + server)
 │   │   ├── schemas/               # Zod schemas = types + validation
@@ -138,7 +148,7 @@ Open Claude Code in this project and use these commands:
 │       ├── pages/                 # One page per route
 │       ├── hooks/                 # Custom hooks
 │       └── utils/                 # tRPC client setup
-├── │   └── mobile/                    # React Native (Expo)
+│   └── mobile/                    # React Native (Expo)
 │   ├── src/
 │   │   ├── screens/               # One screen per file
 │   │   ├── components/            # Native UI components
