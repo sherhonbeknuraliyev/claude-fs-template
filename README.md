@@ -73,8 +73,14 @@ These load automatically when Claude works on relevant code — no commands need
 | `mongoose-patterns` | Working with database models or queries |
 | `react-patterns` | Writing React components, pages, or hooks |
 | `react-native-patterns` | Working with mobile screens or components |
+| `code-reviewer` | Reviewing PRs or checking code quality |
+| `security-auditor` | Reviewing security, auth, or vulnerability concerns |
+| `ci-cd-pipeline` | Setting up CI/CD, GitHub Actions, or Docker |
+| `tech-debt-tracker` | Auditing code quality or planning refactoring |
+| `dependency-auditor` | Updating packages or checking vulnerabilities |
+| `git-workflow` | Creating branches, commits, or PRs |
 
-Skills use progressive loading: Claude sees only the name at startup (~100 tokens each), reads full instructions only when triggered. Zero context waste.
+**12 skills** load progressively: metadata at startup (~100 tokens each), full instructions only when triggered. Zero context waste.
 
 ## Slash Commands
 
@@ -115,7 +121,7 @@ Open Claude Code in this project and use these commands:
 ├── CLAUDE.md                      # Claude reads this automatically
 ├── .claude/
 │   ├── settings.json              # Pre-approved safe commands
-│   ├── skills/                    # 6 auto-loaded skills (Claude's domain knowledge)
+│   ├── skills/                    # 12 auto-loaded skills (Claude's domain knowledge)
 │   └── commands/                  # 17 slash commands (user-invoked actions)
 ├── src/
 │   ├── shared/                    # THE source of truth (web + mobile + server)

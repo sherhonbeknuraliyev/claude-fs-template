@@ -86,12 +86,22 @@ Copy `.env.example` to `.env`. Required:
 
 ## Skills (Auto-Loaded)
 Claude automatically loads these when working on relevant code:
+
+### Stack Skills (project-specific patterns):
 - **project-conventions** — File limits, naming, architecture rules
 - **trpc-patterns** — Router, procedure, middleware patterns
 - **zod-schemas** — Schema creation, validation, type inference
 - **mongoose-patterns** — Model, service, query patterns
 - **react-patterns** — Component, page, hook, tRPC usage
 - **react-native-patterns** — Screen, navigation, native components
+
+### Engineering Skills (best practices):
+- **code-reviewer** — PR review checklist for type safety, security, performance
+- **security-auditor** — OWASP top 10, auth, MongoDB security patterns
+- **ci-cd-pipeline** — GitHub Actions, Docker, deployment pipelines
+- **tech-debt-tracker** — Code smell detection, debt classification, audit commands
+- **dependency-auditor** — Package updates, vulnerability scanning, bundle size
+- **git-workflow** — Branch strategy, commit conventions, PR process
 
 Skills live in `.claude/skills/`. They load on-demand — no context cost until needed.
 
